@@ -1,4 +1,4 @@
-import { reactive } from ".."
+import { isReactive, reactive } from ".."
 
 describe("reactive", () => {
     it('happy path', () => {
@@ -11,5 +11,8 @@ describe("reactive", () => {
     expect("foo" in observed).toBe(true);
     //     // ownKeys
     expect(Object.keys(observed)).toEqual(["foo"]);
-    })
+    
+    expect(isReactive(observed)).toBe(true)
+    expect(isReactive(original)).toBe(false)
+})
 })

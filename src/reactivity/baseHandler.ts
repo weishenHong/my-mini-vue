@@ -1,3 +1,4 @@
+import { ReactiveFlags } from ".";
 import { track, trigger } from "./effect";
 
 const get = createGetter()
@@ -19,6 +20,12 @@ export const readonlyHandlers = {
 export function createGetter(isReadonly = false) {
   return function get(original, key, receiver) {
     const res = Reflect.get(original, key, receiver);
+    if(key === ReactiveFlags.IS_REACTIVE) {
+        return !isReadonly
+    }
+    if(key === ReactiveFlags.IS_READONLY) {
+        return isReadonly
+    }
     if(!isReadonly) {
         // TODO 依赖收集
         track(original, key);

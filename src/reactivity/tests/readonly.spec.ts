@@ -1,4 +1,4 @@
-import { readonly } from "..";
+import { isReadonly, readonly } from "..";
 
 describe("readonly", () => {
     it('happy path', () => {
@@ -7,6 +7,8 @@ describe("readonly", () => {
     expect(wrapped).not.toBe(original);
     // get
     expect(wrapped.foo).toBe(1);
+
+    expect(isReadonly(wrapped)).toBe(true)
     })
 
     it('warn then call set', () => {
@@ -17,4 +19,5 @@ describe("readonly", () => {
         
         expect(console.warn).toBeCalled()
     })
+
 })
