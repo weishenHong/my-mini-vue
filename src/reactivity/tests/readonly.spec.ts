@@ -1,4 +1,4 @@
-import { isReadonly, readonly } from "..";
+import { isProxy, isReadonly, readonly } from "..";
 
 describe("readonly", () => {
     it('happy path', () => {
@@ -10,6 +10,8 @@ describe("readonly", () => {
 
     expect(isReadonly(wrapped)).toBe(true)
     expect(isReadonly(wrapped.bar)).toBe(true)
+
+    expect(isProxy(wrapped)).toBe(true)
     })
 
     it('warn then call set', () => {
