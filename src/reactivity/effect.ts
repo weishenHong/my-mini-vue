@@ -22,9 +22,7 @@ class reactiveEffect {
   }
   stop() {
     if(this.active) {
-      this.deps.forEach((dep: any) => {
-        dep.delete(this);
-      });
+cleanupEffect(this)
       if(this.onStop) {
         this.onStop()
       }
@@ -33,6 +31,13 @@ class reactiveEffect {
   }
 }
 
+function cleanupEffect(effect){
+  effect.deps.forEach((dep: any) => {
+    dep.delete(effect);
+  });
+  effect.deps.length = 0
+
+}
 
 let activeEffect: any 
 export function effect(fn: Function, options: any= {}) {
@@ -60,6 +65,7 @@ export function track(target: object, key: string | symbol) {
         dep = new Set()
         depsMap.set(key, dep);
     }
+    if(dep.has(activeEffect)) return
     (dep as Set<any>).add(activeEffect)
     activeEffect.deps.push(dep)
 }
