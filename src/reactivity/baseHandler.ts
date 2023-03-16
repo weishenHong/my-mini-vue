@@ -1,4 +1,5 @@
-import { ReactiveFlags } from ".";
+import { reactive, ReactiveFlags, readonly } from ".";
+import { isObject } from "../shared";
 import { track, trigger } from "./effect";
 
 const get = createGetter()
@@ -20,6 +21,10 @@ export const readonlyHandlers = {
 export function createGetter(isReadonly = false) {
   return function get(original, key, receiver) {
     const res = Reflect.get(original, key, receiver);
+
+    if(isObject(res)) {
+        return isReadonly? readonly(res): reactive(res)
+    }
     if(key === ReactiveFlags.IS_REACTIVE) {
         return !isReadonly
     }

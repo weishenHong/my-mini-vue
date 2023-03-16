@@ -2,13 +2,14 @@ import { isReadonly, readonly } from "..";
 
 describe("readonly", () => {
     it('happy path', () => {
-        const original = { foo: 1 };
+        const original = { foo: 1, bar: {a : 1} };
     const wrapped = readonly(original);
     expect(wrapped).not.toBe(original);
     // get
     expect(wrapped.foo).toBe(1);
 
     expect(isReadonly(wrapped)).toBe(true)
+    expect(isReadonly(wrapped.bar)).toBe(true)
     })
 
     it('warn then call set', () => {
