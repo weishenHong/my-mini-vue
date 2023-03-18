@@ -65,46 +65,63 @@ export function track(target: object, key: string | symbol) {
         dep = new Set()
         depsMap.set(key, dep);
     }
-    if(dep.has(activeEffect)) return
+    trackEffect(dep)
+}
+
+export function trackEffect(dep) {
+  if(dep.has(activeEffect)) return
     (dep as Set<any>).add(activeEffect)
     activeEffect.deps.push(dep)
-}
+};
+
 
 export function trigger(target, key = null) {
     const depsMap = targetMap.get(target)
     if (!depsMap) {
       return
     }
+
+    const dep = depsMap.get(key)
+    triggerEffects(dep)
   
-    const effects = new Set()
+    // const effects = new Set()
   
     // 收集所有与 target[key] 相关的 effect
-    const addEffects = (dep) => {
-      dep.forEach((effect) => {
-        effects.add(effect)
-      })
-    }
+    // const addEffects = (dep) => {
+    //   dep.forEach((effect) => {
+    //     effects.add(effect)
+    //   })
+    // }
   
-    if (key !== null) {
-      const dep = depsMap.get(key)
-      if (dep) {
-        addEffects(dep)
-      }
-    } else {
-        // 如果不指定 key，则会遍历 depsMap 中所有的 dep，收集它们中的 effect 并执行。
-      depsMap.forEach(addEffects)
-    }
+    // if (key !== null) {
+    //   const dep = depsMap.get(key)
+    //   if (dep) {
+    //     addEffects(dep)
+    //   }
+    // } else {
+    //     // 如果不指定 key，则会遍历 depsMap 中所有的 dep，收集它们中的 effect 并执行。
+    //   depsMap.forEach(addEffects)
+    // }
   
-    // 执行所有相关的 effect
-    effects.forEach((effect) => {
-      if(effect.scheduler) {
-        effect.scheduler()
-      }else {
-        effect.run()
-      }
-    })
+    // // 执行所有相关的 effect
+    // effects.forEach((effect) => {
+    //   if(effect.scheduler) {
+    //     effect.scheduler()
+    //   }else {
+    //     effect.run()
+    //   }
+    // })
   }
 
+export function triggerEffects(dep) {
+  for (const effect of dep) {
+    if(effect.scheduler) {
+      effect.scheduler()
+    }else {
+      effect.run()
+    }
+  }
+}
 export function stop(runner) {
   runner.effect.stop()
 }

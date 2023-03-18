@@ -1,0 +1,32 @@
+import { reactive } from ".";
+import { hasChanged, isObject } from "../shared";
+import { isTracking, trackEffect, triggerEffects } from "./effect";
+
+class RefImpl {
+  private _value: any;
+  public dep = new Set();
+  private _rawValue: any
+  constructor(value) {
+    this._rawValue = value
+    this._value = convert(value) 
+  }
+  get value() {
+    if (isTracking()) {
+      trackEffect(this.dep);
+    }
+    return this._value;
+  }
+  set value(newValue) {
+    if (!hasChanged(this._rawValue, newValue)) return;
+    this._rawValue = newValue
+    this._value = convert(newValue)
+    triggerEffects(this.dep);
+  }
+}
+export function ref(value) {
+  return new RefImpl(value);
+}
+
+function convert(value) {
+    return isObject(value) ? reactive(value) :value;
+}
