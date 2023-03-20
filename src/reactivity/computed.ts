@@ -16,6 +16,7 @@ class ComputedRefImpl {
         if(this.dirty){
             this.dirty = false
             this._value = this._effect.run()
+            // * 第一次调用时会在这里完成依赖的收集，后续更新就会重置dirty的值，获取最新的值。 
         }
         return this._value
     }
