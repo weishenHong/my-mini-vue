@@ -6,6 +6,7 @@ class RefImpl {
   private _value: any;
   public dep = new Set();
   private _rawValue: any
+  public _v_isRef = true
   constructor(value) {
     this._rawValue = value
     this._value = convert(value) 
@@ -29,4 +30,11 @@ export function ref(value) {
 
 function convert(value) {
     return isObject(value) ? reactive(value) :value;
+}
+
+export function isRef(ref) {
+  return !!ref._v_isRef   
+}
+export function unRef(ref) {
+    return isRef(ref)? ref.value : ref
 }
