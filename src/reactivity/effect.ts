@@ -1,6 +1,6 @@
 
 let shouldTrack = false;
-class reactiveEffect {
+export class reactiveEffect {
   private _fn: any;
   public scheduler;
   deps = [];
