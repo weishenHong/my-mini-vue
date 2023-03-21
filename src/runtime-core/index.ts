@@ -1,2 +1,2 @@
-export { createApp } from "./createApp"
-export {h} from './h'
+export { createApp } from "./createApp";
+export { h } from "./h";
