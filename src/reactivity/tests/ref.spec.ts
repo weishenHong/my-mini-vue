@@ -1,4 +1,4 @@
-import { reactive } from ".."
+import { reactive } from "../index"
 import { effect } from "../effect"
 import { isRef, proxyRefs, ref, unRef } from "../ref"
 

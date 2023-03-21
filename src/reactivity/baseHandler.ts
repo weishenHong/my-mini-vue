@@ -1,5 +1,5 @@
-import { reactive, ReactiveFlags, readonly } from ".";
-import { extend, isObject } from "../shared";
+import { reactive, ReactiveFlags, readonly } from "./index";
+import { extend, isObject } from "../shared/index";
 import { track, trigger } from "./effect";
 
 const get = createGetter()
@@ -23,7 +23,7 @@ export const shallowReadonlyHandlers = extend({},readonlyHandlers, {
 }) 
 
 export function createGetter({ isReadonly = false, shallow = false } = {}) {
-  return function get(original, key, receiver) {
+  return function get(original: object, key: PropertyKey, receiver: any): any {
     const res = Reflect.get(original, key, receiver);
 
     if(isObject(res) && !shallow) {
@@ -43,7 +43,7 @@ export function createGetter({ isReadonly = false, shallow = false } = {}) {
   };
 }
 export function createSetter() {
-    return function set(target, key, newValue, receiver) {
+    return function set(target: any, key: any, newValue: any, receiver: any) {
       const res = Reflect.set(target, key, newValue, receiver);
       // TODO 触发依赖
 

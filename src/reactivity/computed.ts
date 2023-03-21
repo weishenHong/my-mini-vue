@@ -6,7 +6,7 @@ class ComputedRefImpl {
     private _value: any
     private _effect: reactiveEffect
     
-    constructor(getter) {
+    constructor(getter: Function) {
         this._getter = getter
         this._effect = new reactiveEffect(getter, () => {
             this.dirty = true
@@ -21,6 +21,6 @@ class ComputedRefImpl {
         return this._value
     }
 }
-export function computed(getter) {
+export function computed(getter: Function) {
     return new ComputedRefImpl(getter)
 };

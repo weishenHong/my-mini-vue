@@ -1,4 +1,4 @@
-import {  reactive } from ".."
+import {  reactive } from "../index"
 import { effect,stop } from "../effect"
 
 describe('effect' , () => {

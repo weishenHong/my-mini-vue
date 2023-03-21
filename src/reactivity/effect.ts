@@ -31,7 +31,7 @@ cleanupEffect(this)
   }
 }
 
-function cleanupEffect(effect){
+function cleanupEffect(effect: any){
   effect.deps.forEach((dep: any) => {
     dep.delete(effect);
   });
@@ -50,7 +50,7 @@ export function effect(fn: Function, options: any= {}) {
     return  runner
 }
 const targetMap = new WeakMap() // 用于存储所有的目标对象（即响应式对象）以及它们对应的 depsMap
-export function track(target: object, key: string | symbol) {
+export function track(target: object, key: any) {
   if (!isTracking()) {
     return;
   }
@@ -68,14 +68,14 @@ export function track(target: object, key: string | symbol) {
     trackEffect(dep)
 }
 
-export function trackEffect(dep) {
+export function trackEffect(dep: Set<unknown>) {
   if(dep.has(activeEffect)) return
     (dep as Set<any>).add(activeEffect)
     activeEffect.deps.push(dep)
 };
 
 
-export function trigger(target, key = null) {
+export function trigger(target: object, key = null) {
     const depsMap = targetMap.get(target)
     if (!depsMap) {
       return
@@ -113,7 +113,7 @@ export function trigger(target, key = null) {
     // })
   }
 
-export function triggerEffects(dep) {
+export function triggerEffects(dep: any) {
   for (const effect of dep) {
     if(effect.scheduler) {
       effect.scheduler()
@@ -122,7 +122,7 @@ export function triggerEffects(dep) {
     }
   }
 }
-export function stop(runner) {
+export function stop(runner: { effect: { stop: () => void; }; }) {
   runner.effect.stop()
 }
 export function isTracking() {

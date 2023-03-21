@@ -1,4 +1,4 @@
-import { isReadonly, shallowReadonly } from "..";
+import { isReadonly, shallowReadonly } from "../index";
 
 describe("shallowReadonly", () => {
     it('happy path', () => {

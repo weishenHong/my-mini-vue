@@ -9,21 +9,21 @@ export function reactive(original: any) {
   return new Proxy(original, mutableHandlers);
 }
 
-export function readonly(original) {
+export function readonly(original: any) {
   return new Proxy(original, readonlyHandlers );
 
 }
-export function shallowReadonly(original) {
+export function shallowReadonly(original: any) {
   return new Proxy(original, shallowReadonlyHandlers );
 
 }
 
-export function isReactive(value) {
+export function isReactive(value: { [x: string]: any; }) {
     return !!value[ReactiveFlags.IS_REACTIVE]
 }
-export function isReadonly(value) {
+export function isReadonly(value: { [x: string]: any; }) {
     return !!value[ReactiveFlags.IS_READONLY]
 }
-export function isProxy(value) {
+export function isProxy(value: any) {
     return isReactive(value) || isReadonly(value) 
 }

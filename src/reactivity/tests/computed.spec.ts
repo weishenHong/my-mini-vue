@@ -1,4 +1,4 @@
-import { reactive } from ".."
+import { reactive } from "../index"
 import { computed } from "../computed"
 
 describe('computed', () => {
