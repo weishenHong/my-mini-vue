@@ -13,15 +13,22 @@ export const App = {
       },
       [
         h("div", {}, "hi," + this.msg),
-        h(Foo, {
-          count: 1,
-          onAdd(a, b) {
-            console.log("onAdd ", a, b);
+        h(
+          Foo,
+          {
+            count: 1,
+            onAdd(a, b) {
+              console.log("onAdd ", a, b);
+            },
+            onAddFoo() {
+              console.log("onAddFoo");
+            },
           },
-          onAddFoo() {
-            console.log("onAddFoo");
-          },
-        }),
+          {
+            header: ({ age }) => h("p", {}, "slots form foo1" + age),
+            footer: () => h("p", {}, "slots form foo2"),
+          }
+        ),
       ]
       // [h('div', {class: ['red']}, 'hi-red' ), h('div', {class: ['blue']}, 'hi-blue' )]
     );

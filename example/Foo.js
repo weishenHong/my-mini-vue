@@ -1,4 +1,4 @@
-import { h } from "../lib/guide-mini-vue.esm.js";
+import { h, renderSlots } from "../lib/guide-mini-vue.esm.js";
 
 export const Foo = {
   setup(props, { emit }) {
@@ -17,6 +17,15 @@ export const Foo = {
       "emitAdd"
     );
     const foo = h("p", {}, `foo: ${this.count}`);
-    return h("div", {}, [foo, btn]);
+
+    const age = 19;
+    return h("div", {}, [
+      renderSlots(this.$slots, "header", {
+        age,
+      }),
+      foo,
+      btn,
+      renderSlots(this.$slots, "footer"),
+    ]);
   },
 };

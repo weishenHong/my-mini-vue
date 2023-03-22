@@ -2,6 +2,7 @@ import { hasOwn } from "../shared/index";
 
 const publicPropetiesMap: any = {
   $el: (i: any) => i.vnode.el,
+  $slots: (i: any) => i.slots,
 };
 export const PublicInstanceProxyHandlers = {
   get({ _: instance }: any, key: string) {
