@@ -9,11 +9,20 @@ export const App = {
       {
         id: "root",
         class: ["red"],
-        onClick() {
-          alert("click");
-        },
+        onClick() {},
       },
-      [h("div", {}, "hi," + this.msg), h(Foo, { count: 1 })]
+      [
+        h("div", {}, "hi," + this.msg),
+        h(Foo, {
+          count: 1,
+          onAdd(a, b) {
+            console.log("onAdd ", a, b);
+          },
+          onAddFoo() {
+            console.log("onAddFoo");
+          },
+        }),
+      ]
       // [h('div', {class: ['red']}, 'hi-red' ), h('div', {class: ['blue']}, 'hi-blue' )]
     );
   },
