@@ -8,6 +8,9 @@ export const App = {
       {
         id: "root",
         class: ["red"],
+        onClick() {
+          alert("click");
+        },
       },
       "hi," + this.msg
       // [h('div', {class: ['red']}, 'hi-red' ), h('div', {class: ['blue']}, 'hi-blue' )]
