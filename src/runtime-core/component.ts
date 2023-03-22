@@ -23,15 +23,18 @@ export function setupComponent(instance: { vnode: any; type: any }) {
 
   setupStatefuComponent(instance);
 }
+let currentInstance: any = null;
 function setupStatefuComponent(instance: any) {
   const component = instance.type;
 
   instance.proxy = new Proxy({ _: instance }, PublicInstanceProxyHandlers);
   const { setup } = component;
   if (setup) {
+    setCurrentInstance(instance);
     const setupResult = setup(shallowReadonly(instance.props), {
       emit: instance.emit,
     });
+    setCurrentInstance(null);
     handleSetupResult(instance, setupResult);
   }
 }
@@ -48,4 +51,11 @@ function finishComponentSetup(instance: any) {
   if (component.render) {
     instance.render = component.render;
   }
+}
+export function getCurrentInstance() {
+  return currentInstance;
+}
+
+export function setCurrentInstance(instance: any) {
+  currentInstance = instance;
 }
