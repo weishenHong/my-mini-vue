@@ -3,15 +3,24 @@ export function createElement(type: any) {
   return document.createElement(type);
 }
 
-export function patchProps(el: any, key: any, value: any) {
+export function patchProps(
+  el: HTMLElement,
+  key: any,
+  prevVal: any,
+  nextVal: any
+) {
   const isOn = (key: string) => {
     return /^on[A-Z]/.test(key);
   };
   if (isOn(key)) {
     const event = key.slice(2).toLowerCase();
-    el.addEventListener(event, value);
+    el.addEventListener(event, nextVal);
   } else {
-    el.setAttribute(key, value);
+    if (nextVal === undefined || nextVal === null) {
+      el.removeAttribute(key);
+    } else {
+      el.setAttribute(key, nextVal);
+    }
   }
 }
 export function insert(el: any, container: any) {

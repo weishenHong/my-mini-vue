@@ -37,3 +37,5 @@ export function createReactiveObject(target: any, baseHandler: any) {
   }
   return new Proxy(target, baseHandler);
 }
+
+export { ref, proxyRefs } from "./ref";
