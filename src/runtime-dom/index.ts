@@ -23,8 +23,13 @@ export function patchProps(
     }
   }
 }
-export function insert(el: any, container: any) {
-  container.append(el);
+export function insert(
+  child: HTMLElement,
+  container: HTMLElement,
+  anchor?: any
+) {
+  // container.append(el);
+  container.insertBefore(child, anchor || null);
 }
 
 export function setElementText(el: any, text: any) {
