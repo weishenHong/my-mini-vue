@@ -27,7 +27,22 @@ export function insert(el: any, container: any) {
   container.append(el);
 }
 
-const renderer: any = createRenderer({ createElement, patchProps, insert });
+export function setElementText(el: any, text: any) {
+  el.textContent = text;
+}
+export function remove(child: any) {
+  const parent = child.parentNode;
+  if (parent) {
+    parent.removeChild(child);
+  }
+}
+const renderer: any = createRenderer({
+  createElement,
+  patchProps,
+  insert,
+  remove,
+  setElementText,
+});
 export function createApp(...args: any) {
   return renderer.createApp(...args);
 }
