@@ -25,3 +25,15 @@ describe("element", () => {
     });
   });
 });
+
+describe("text", () => {
+  it("simple text", () => {
+    const context = "some text";
+    const ast = baseParse(context);
+
+    expect(ast.children[0]).toStrictEqual({
+      type: NodeTypes.TEXT,
+      content: "some text",
+    });
+  });
+});
