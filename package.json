@@ -2,11 +2,10 @@
   "name": "my-mini-vue",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "./lib/guide-mini-vue.cjs.js",
   "module": "./lib/guide-mini-vue.esm.js",
   "scripts": {
-    "test": "jest -c jest.config.js",
+    "test": "jest -c --watchAll",
     "build": "rollup -c rollup.config.js",
     "build-watch": "rollup -c rollup.config.js --watch"
   },
