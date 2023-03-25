@@ -1,6 +1,7 @@
 import { effect } from "../reactivity/effect";
 import { shapeFlags } from "../shared/shapeFlags";
 import { createComponentInstance, setupComponent } from "./component";
+import { shouldUpdateComponent } from "./componentUpdateUtils";
 import { createAppAPI } from "./createApp";
 import { Fragment, TEXT } from "./vnode";
 export function createRenderer(options: any) {
@@ -9,7 +10,7 @@ export function createRenderer(options: any) {
     patchProps: hostPatchProps,
     insert: hostInsert,
     remove: hostRemove,
-    setElementText: hostSetElementText
+    setElementText: hostSetElementText,
   } = options;
   function render(
     vnode: {
@@ -75,7 +76,21 @@ export function createRenderer(options: any) {
     parentComponent: any,
     anchor: any
   ) {
-    mountComponent(n2, container, parentComponent, anchor);
+    if (!n1) {
+      mountComponent(n2, container, parentComponent, anchor);
+    } else {
+      updateComponent(n1, n2);
+    }
+  }
+  function updateComponent(n1: any, n2: any) {
+    const instance = (n2.component = n1.component);
+    if (shouldUpdateComponent(n1, n2)) {
+      instance.next = n2;
+      instance.update();
+    } else {
+      n2.el = n1.el;
+      instance.vnode = n2;
+    }
   }
   function mountComponent(
     initinalVNode: any,
@@ -83,7 +98,10 @@ export function createRenderer(options: any) {
     parentComponent: any,
     anchor: any
   ) {
-    const instance = createComponentInstance(initinalVNode, parentComponent);
+    const instance = (initinalVNode.component = createComponentInstance(
+      initinalVNode,
+      parentComponent
+    ));
     setupComponent(instance);
     setupRenderEffect(instance, initinalVNode, container, anchor);
   }
@@ -93,7 +111,7 @@ export function createRenderer(options: any) {
     container: any,
     anchor: any
   ) {
-    effect(() => {
+    instance.update = effect(() => {
       if (!instance.isMounted) {
         const { proxy } = instance;
         const subTree = (instance.subTree = instance.render.call(proxy));
@@ -102,6 +120,12 @@ export function createRenderer(options: any) {
         instance.isMounted = true;
       } else {
         // update
+        const { next, vnode } = instance;
+        if (next) {
+          next.el = vnode.el;
+          updateComponentPreRender(instance, next);
+        }
+
         const { proxy } = instance;
         const subTree = instance.render.call(proxy);
         const prevSubTree = instance.subTree;
@@ -109,7 +133,11 @@ export function createRenderer(options: any) {
       }
     });
   }
-
+  function updateComponentPreRender(instance: any, nextVNode: any) {
+    instance.vnode = nextVNode;
+    instance.next = null;
+    instance.props = nextVNode.props;
+  }
   function processElement(
     n1: any,
     n2: any,
@@ -391,7 +419,7 @@ export function createRenderer(options: any) {
     });
   }
   return {
-    createApp: createAppAPI(render)
+    createApp: createAppAPI(render),
   };
 }
 
