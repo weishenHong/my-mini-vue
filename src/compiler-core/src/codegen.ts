@@ -6,11 +6,11 @@ import {
   TO_DISPLAY_STRING,
 } from "./runtimeHelpers";
 
-export default function generate(ast: any) {
+export function generate(ast: any) {
   const context = createCodegenContext();
   const { push } = context;
 
-  newFunctionPreamble(ast, context);
+  genFunctionPreamble(ast, context);
 
   const functionName = "render";
   const args = ["_ctx", "_cache"];
@@ -19,12 +19,13 @@ export default function generate(ast: any) {
   push(`function ${functionName}(${signature}){`);
   push("return ");
   genNode(ast.codegenNode, context);
-  push(`}`);
+  push("}");
+
   return {
     code: context.code,
   };
 }
-function newFunctionPreamble(ast: any, context: any) {
+function genFunctionPreamble(ast: any, context: any) {
   const { push } = context;
   const VueBinging = "Vue";
   const aliasHelper = (s: any) => `${helperMapName[s]}: _${helperMapName[s]}`;

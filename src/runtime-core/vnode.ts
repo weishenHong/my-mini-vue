@@ -1,6 +1,7 @@
 import { shapeFlags } from "../shared/shapeFlags";
 export const Fragment = Symbol("Fragment");
 export const TEXT = Symbol("TEXT");
+export { createVNode as createElementVNode };
 export function createVNode(type: any, props?: any, children?: any) {
   const vnode = {
     type,

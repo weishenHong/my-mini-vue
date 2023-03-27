@@ -1,4 +1,4 @@
-import generate from "../src/codegen";
+import { generate } from "../src/codegen";
 import { baseParse } from "../src/parse";
 import { transform } from "../src/transform";
 import transformElement from "../src/transform/transformElement";

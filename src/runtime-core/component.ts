@@ -52,6 +52,11 @@ function handleSetupResult(instance: { setupState: any }, setupResult: any) {
 
 function finishComponentSetup(instance: any) {
   const component = instance.type;
+  if (compiler && !component.render) {
+    if (component.template) {
+      component.render = compiler(component.template);
+    }
+  }
   if (component.render) {
     instance.render = component.render;
   }
@@ -62,4 +67,9 @@ export function getCurrentInstance() {
 
 export function setCurrentInstance(instance: any) {
   currentInstance = instance;
+}
+
+let compiler: any;
+export function registerRuntimeCompiler(_compiler: any) {
+  compiler = _compiler;
 }
